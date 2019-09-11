@@ -151,7 +151,7 @@ void HT1621::writeChar(uint8_t address, uint8_t c, bool decimal)
 {
     TAKE_CS();
     if( decimal )
-        write(address, charMap[c]|DECIMAL);
+        write(address, charMap[c]|B00001000);
     else
         write(address, charMap[c]);
     RELEASE_CS();
@@ -249,7 +249,7 @@ void HT1621::printNumber(long number, int places, int dec, bool flushdisplay)
   int pos = places - 1; //-1 as we start at index LEN-1 (end)
   for (int i = 0; i < len; i++) {
     bool addDec = false;
-    if ( pos == decpoint ) addDec = true;
+    if ( pos == decpoint && dec > 0) addDec = true;
     writeChar(pos, d[i], addDec);
     pos--;
     if ( pos < 0 ) break;
